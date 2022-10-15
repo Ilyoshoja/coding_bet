@@ -1,0 +1,92 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap');
+.container {
+    @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Mono&family=Oxygen+Mono&display=swap');
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    // background: linear-gradient(150deg, #020711, #0b0525,  #1c0f4e 60%,  #020711);
+  background: linear-gradient(140deg, #0d0629 20%, #0e1c40, #162945, #141952, #0f092d, #08041c);
+
+}
+
+form {
+    width:
+        80vh;
+    height: 60vh;
+    text-align: center;
+    align-items: center;
+    padding: 8vh;
+    border-radius: 6px;
+    background: linear-gradient(150deg, #1E1E1E, #1e1e27);
+    background: rgba(217, 217, 217, 0.03);
+
+}
+
+.main{
+    font-family: 'Noto Sans Mono', monospace;
+
+    font-size: 30px;
+    position: absolute;
+    color: #fff;
+    top: 15%;
+    left:35%;
+
+}
+h3 {
+    font-family: 'Noto Sans Mono', monospace;
+    right: 40%;
+    position: relative;
+    color: #fff;
+    // font-weight: 300;
+    font-size: larger;
+}
+
+label {
+    background: rgba(217, 217, 217, 0.03);
+    border-radius: 8px;
+    padding: 10px;
+    margin: 10px;
+    display: flex;
+
+}
+
+input {
+    flex: none;
+    order: 1;
+    flex-grow: 0;
+    // font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-family: 'Share Tech Mono', monospace;
+
+    font-size: larger;
+    color: #c1c6ca;
+    margin-left: 10px;
+    outline: none;
+    background: none;
+    border: none;
+
+}
+
+.button {
+    font-family: 'Noto Sans Mono', monospace;
+    width: 40vh;
+    padding: 10px;
+    font-size: larger;
+    color: #fff;
+    background: #2DB97C;
+    border-radius: 10px;
+
+    &:hover {
+        background: #32dc92;
+        transition: 0.5s;
+    }
+}
