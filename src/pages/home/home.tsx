@@ -6,23 +6,46 @@ import Bat from "./img/BAT.png";
 import Pagination from "@mui/material/Pagination";
 import { java } from "./arrays";
 import { python } from "./arrays";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axios from "axios";
+import http from "../../service";
 interface HomeProps {}
 interface arrayType {
   id: number;
   title: string;
 }
+
 const Home: React.FC<HomeProps> = () => {
   const [value, setValue] = React.useState(0);
+  const navigation = useNavigate();
+  const [select, setSelect] = React.useState<boolean>(false);
+  const [items, setItems] = React.useState<boolean>(false);
+  const [icons , setIcons] = React.useState({});
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
-  const navigation = useNavigate()
-  const [select, setSelect] = React.useState<boolean>(false);
-  const [items, setItems] = React.useState<boolean>(false);
-
+  React.useEffect(() => {
+    http
+      .get("language/list-for-users")
+      .then((res) => setIcons(res.data))
+      .catch((err) => console.log(err));
+  }, []);
+  const languageID = 1;
+  // enter to language selection
+  React.useEffect(() => {
+    http
+      .get(`/section/by-language-id/${languageID}`, {
+        headers: {
+          Authorization:
+            "Bearer " +
+            "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxMjNAZG9tYWluLmNvbSIsImlhdCI6MTY2NjA3NDg3MiwiZXhwIjoxNjY2MTQ2ODcyfQ.ubjXOEvz1l_qQaevHi8yI2DqaljRkrN9RUlNDnCL8Gn3fMxVqFD8nD_R_60rE5P4lakNxX8V0mWq1NqO3MspKg",
+        },
+      })
+      .then((data) => {
+        console.log("data = ", data);
+      });
+  }, []);
   return (
     <div className={classes.wrapper}>
       <nav className="navbar navbar-expand-lg navbar-light">
@@ -58,14 +81,24 @@ const Home: React.FC<HomeProps> = () => {
             <li className={classes.navlink}>Prefs</li>
           </ul>
           <div className={classes.buttons}>
-            <button onClick={()=> navigation("/login")} className={classes.singin}>Sing In</button>
-            <button onClick={()=> navigation("/register")} className={classes.singup}>Sing Up</button>
+            <button onClick={() => navigation("/")} className={classes.singin}>
+              Sing In
+            </button>
+            <button
+              onClick={() => navigation("/register")}
+              className={classes.singup}
+            >
+              Sing Up
+            </button>
           </div>
         </div>
       </nav>
       <div className={classes.line}>
         <div className={classes.language}>
-          <div
+          {
+
+          }
+          {/* <div
             className={`${!select && classes.border}`}
             onClick={() => setSelect(false)}
           >
@@ -86,25 +119,34 @@ const Home: React.FC<HomeProps> = () => {
               alt="404"
             />
             <span className={classes.text}>Python</span>
-          </div>
+          </div> */}
         </div>
       </div>
 
       <div className={classes.cards}>
         {select
           ? python.map((item, index) => {
-            
               return (
-                <Question name={item.name} title={item.title} key={index} id={index} />
+                <Question
+                  name={item.name}
+                  title={item.title}
+                  key={index}
+                  id={index}
+                />
               );
             })
-          : java.map((item , index) => {
+          : java.map((item, index) => {
               return (
-                <Question name={item.name} title={item.title} key={index} id={index}  />
+                <Question
+                  name={item.name}
+                  title={item.title}
+                  key={index}
+                  id={index}
+                />
               );
             })}
       </div>
-      
+
       <Pagination
         count={2}
         variant="outlined"
@@ -135,22 +177,10 @@ const Home: React.FC<HomeProps> = () => {
         <div className={classes.box}>
           <h2 className={classes.box_name}>Misc Code Practice</h2>
           <div className={classes.box_link}>
-            <p>
-
-            Code Badges
-            </p>
-            <p>
-              
-             Introduction to Mod (video) 
-            </p>
-            <p>
-
-             MakeBricks problem and solution (video x 2) 
-            </p>
-            <p>
-
-             FizzBuzz the famous code interview question(video)
-            </p>
+            <p>Code Badges</p>
+            <p>Introduction to Mod (video)</p>
+            <p>MakeBricks problem and solution (video x 2)</p>
+            <p>FizzBuzz the famous code interview question(video)</p>
           </div>
         </div>
       </div>

@@ -6,11 +6,11 @@ import Layout from "./pages/layout";
 const App: FC = () => (
   <div>
     <Routes>
-    <Route path='/' element={<Layout/>} />
-      <Route index element={<Home />} />
+    <Route path='' element={<Layout/>} />
+      <Route index element={<Login />} />
       <Route path='section' element={<Section />} />
+      <Route path="home" element={<Home />} />
       <Route path='problem' element={<Problem />} />
-      <Route path='login' element={<Login />} />
       <Route path='register' element={<Register />} />
     </Routes>
   </div>

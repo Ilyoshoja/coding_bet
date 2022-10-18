@@ -1,4 +1,4 @@
 export interface TypePerson {
-    username: string;
+    email: string;
     password: string;
 }

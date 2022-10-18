@@ -20,8 +20,7 @@
 }
 
 form {
-    width:
-        80vh;
+    width:80vh;
     height: 60vh;
     text-align: center;
     align-items: center;
@@ -61,6 +60,7 @@ label {
 }
 
 input {
+    width: 60%;
     flex: none;
     order: 1;
     flex-grow: 0;
@@ -78,7 +78,7 @@ input {
 
 .button {
     font-family: 'Noto Sans Mono', monospace;
-    width: 40vh;
+    width: 100%;
     padding: 10px;
     font-size: larger;
     color: #fff;
@@ -90,3 +90,8 @@ input {
         transition: 0.5s;
     }
 }
+.alert{
+    padding: 5%;
+}
+
+
