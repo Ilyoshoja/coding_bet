@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import { TypePerson } from "../interface/login_register_interface";
-import stype from "./login.module.scss";
 import Vector from "./Vector.png";
 import passwordImg from "./passwod_img.png";
 import classes from "./login.module.scss";
+import http from "../../service";
+import { log } from "console";
 interface RegisterProps {}
 
 const Register: React.FC<RegisterProps> = () => {
@@ -17,26 +18,18 @@ const Register: React.FC<RegisterProps> = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(person);
+    const user = {
+      email: person.username,
+      password:person.password,
+    };
+  http.post("auth/sign-up", user ).then((res)=>console.log(res)).catch((err)=>console.log(err));
+
   };
   return (
     <div className={classes.container}>
       <h1 className={classes.main}>Sign Up</h1>
       <form onSubmit={handleSubmit}>
-        <h3>Email</h3>
-
-        <label htmlFor="">
-          <span>
-            <img src={Vector} alt="" />
-          </span>
-          <input
-            type="text"
-            name="username"
-            placeholder="Please enter here"
-            value={person.username || ""}
-            onChange={handleChange}
-          />
-        </label>
-        <br />
+      
         <h3>Username</h3>
 
         <label htmlFor="">

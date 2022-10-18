@@ -4,6 +4,7 @@ import classes from "./login.module.scss";
 import Vector from "./Vector.png";
 import passwordImg from "./passwod_img.png";
 import { useNavigate } from "react-router-dom";
+import http from "../../service";
 interface LoginProps {}
 
 const Login: React.FC<LoginProps> = () => {
@@ -18,7 +19,15 @@ const Login: React.FC<LoginProps> = () => {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(person);
-    navigation("/")
+    const user = {
+      email: person.username,
+      password: person.password,
+    }
+    http
+      .post("auth/sign-in", user)
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+    // navigation("/")
   };
   return (
     <div className={classes.container}>
