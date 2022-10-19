@@ -7,7 +7,7 @@ import http from "../../service";
 import { AxiosResponse } from "axios";
 import { useNavigate } from "react-router-dom";
 import { Alert } from "@mui/material";
-import {Link} from "react-router-dom"
+import { Link } from "react-router-dom";
 interface SingUpResponse {
   data: boolean;
   errors: [
@@ -26,13 +26,13 @@ const Register: React.FC = () => {
     email: "",
     password: "",
   });
-  const [errors, setErrors] = useState<number>();
-  const [isError, setError] = useState<boolean>(false);
+  const [isError, setIsError] = useState<boolean>(false);
 
   const navigation = useNavigate();
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPerson({ ...person, [event.target.name]: event.target.value });
   };
+  const [isStatus, setStatus] = useState<boolean>();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log(person);
@@ -42,37 +42,23 @@ const Register: React.FC = () => {
       email: person.email,
       password: person.password,
     };
-    // sing-up user
-    http
-      .post("auth/sign-up", user)
-      .then((res) => {
+    try {
+      // sing-up user
+      const { data }: AxiosResponse<SingUpResponse> = await http.post(
+        "/auth/sign-up",
+        user
+      );
 
-        console.log(res.data);
-       
-        res.data && navigation('/')
-      })
-      .catch((err) => {
-        console.log("data", err);
-        setErrors(err.response.status);
-      } );
-    if (errors === 400) {
-      console.log("iltmos email togrim krit ");
-      setError(true)
-    } else if (errors === 409) {
-      // setAlert(true)
-      console.log("Bunday email oldindan mavjud");
-    } else if (errors === 404) {
-      console.log("passower xato");
-    } else {
-      console.log("problse");
-    }
-    //email is authenticated
-    await http
-      .get(`/auth/verification-email/${person.email}`)
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
+      await http.get(`/auth/verification-email/${person.email}`);
 
-    
+      console.log("success = ", data.success);
+      if (data.success === true) {
+        navigation("/")
+      } else {
+        setIsError(true)
+      }
+
+    } catch (error) { console.log(error);}
   };
   return (
     <div className={classes.container}>
@@ -111,11 +97,7 @@ const Register: React.FC = () => {
           Register
         </button>
         <div className={classes.alert}>
-           
-            
-          {isError && (
-            <Alert severity="info">Iltmos Email ni to'gri kiriting!</Alert>
-          )}
+          {isError && <Alert severity="warning">There is such a user</Alert>}
         </div>
         <h3>
           <Link to="/">enter to Sing-in</Link>

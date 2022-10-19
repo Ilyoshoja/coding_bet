@@ -66,14 +66,18 @@ ul {
 
 .cards {
   padding: 10%;
-  padding-top: 0;
+   padding-top: 0;
   padding-bottom: 10px;
   margin: auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
 }
-
+.emty{
+  width: 60px;
+  height: 30%;
+  background-color: red;
+}
 .icon {
   color: #fff;
   font-size: 30px;
