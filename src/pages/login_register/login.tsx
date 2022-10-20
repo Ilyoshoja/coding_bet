@@ -5,8 +5,8 @@ import { Link } from "react-router-dom";
 import { Alert } from "@mui/material";
 import { useNavigate, useParams } from "react-router-dom";
 import classes from "./login.module.scss";
-import Vector from "./Vector.png";
-import passwordImg from "./passwod_img.png";
+import Vector from "./img/Vector.png";
+import passwordImg from "./img/passwod_img.png";
 import http from "../../service";
 interface SingInResponse {
   success: boolean;
@@ -33,7 +33,7 @@ const Login: React.FC = () => {
     if (typeof value === "string") {
       const parse = JSON.parse(value); // ok
       console.log(parse)
-      http.post("/auth/sign-in", parse).then((res) => {
+      http.post("auth/sign-in", parse).then((res) => {
       if (res.data.success === true) {
         navigation("/home");
       } else {

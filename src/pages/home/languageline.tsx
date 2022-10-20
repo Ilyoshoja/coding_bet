@@ -10,7 +10,7 @@ interface LanguageLine {
 
 const Section: React.FC<LanguageLine> = (props) => {
   return (
-    <div key={props.key} onClick={()=>props.getElementId(props.id)} >
+    <div key={props.key} onClick={()=>props.getElementId(props.id)}>
       <img
         src={`https://img.icons8.com/color/344/${props.url}--v1.png`}
         alt="404"

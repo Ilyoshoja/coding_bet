@@ -17,21 +17,15 @@ body {
 
 
 .wrapper {
-  // padding: 20vh;
-  // margin: 30vh;
-  // margin-top: 0;
-  // margin-bottom: 0;
   height: 150vh;
   text-align: center;
-  // background: hsl(263, 71%, 19%);
   background: linear-gradient(140deg, #0d0629 20%, #0d1240, #14294a, #101447, #0f092d, #08041c);
-  // filter: blur(8px);
   background: blur(5px);
-  // -webkit-filter: blur(8px);
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
 }
+
 
 .line {
   width: 100%;
@@ -188,7 +182,7 @@ ul {
 
 }
 
-@media only screen and (max-width: 600px) {
+@media  screen and (max-width: 600px) {
   .container_footer {
 
     width: 100%;
@@ -196,6 +190,7 @@ ul {
     flex-wrap: wrap;
     justify-content: space-between;
   }
+ 
 }
 
 .box_name {

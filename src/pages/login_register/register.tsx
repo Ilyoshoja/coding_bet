@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { TypePerson } from "../interface/login_register_interface";
-import Vector from "./Vector.png";
-import passwordImg from "./passwod_img.png";
+import Vector from "./img/Vector.png";
+import passwordImg from "./img/passwod_img.png";
 import classes from "./login.module.scss";
 import http from "../../service";
 import { AxiosResponse } from "axios";

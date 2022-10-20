@@ -16,7 +16,7 @@ const Home: React.FC<HomeProps> = () => {
   const navigation = useNavigate();
   const [section, setSection] = React.useState<SectionsType[]>([]);
   const [icons, setIcons] = React.useState<LanguageType[]>([]);
-  const [languageID, setLanguageID] = React.useState<number>(2);
+  const [languageID, setLanguageID] = React.useState<number>(1);
 
   //logout
   const handleLogout = () => {
@@ -34,13 +34,13 @@ const Home: React.FC<HomeProps> = () => {
 
   // enter to language selection
   const getElementId = (id:number) => {
-    console.log(id);
     setLanguageID(id);
   };
 
  // get section id
   const getSectionId = (id:number) => {
-   console.log(id)
+    console.log(id)
+    navigation(`/${id}`)
  }
   React.useEffect(() => {
     console.log("id", languageID);
@@ -49,7 +49,7 @@ const Home: React.FC<HomeProps> = () => {
         headers: {
           Authorization:
             "Bearer " +
-            "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYW1zaGlkYmVrZDY2NEBnbWFpbC5jb20iLCJpYXQiOjE2NjYxNTMzMzksImV4cCI6MTY2NjIyNTMzOX0.BKp2Ud1LG_b_KGWWbzpHQJA4wyWlXJ9JKAGUrxxz2YPeegmUZK5xTV5voUMrDiXn13C7g_pK6wywhTiBfrMvDQ",
+            "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYW1zaGlkYmVrZDY2NEBnbWFpbC5jb20iLCJpYXQiOjE2NjYyMzcxNjAsImV4cCI6MTY2NjMwOTE2MH0.OIOgbt3a5giTpvk_KUjnMWPDy9_MJI6mQoXj-KPFwGp_1JZ4WyJnHIujFqG7urFV-ZflePD0-lBFMvQis0ruHw",
         },
       })
       .then((res) => {
