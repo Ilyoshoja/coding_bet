@@ -5,58 +5,60 @@ import Bat from "./img/BAT.png";
 import Pagination from "@mui/material/Pagination";
 import http from "../../service";
 import LanguageLine from "./languageline";
-import { LanguageType } from "../interface/language";
-import Sections, { SectionsType } from "../sections/sections";
+import stars from "./img/stars.png";
+import star from "./img/star.png";
+import { LanguageType, SectionType } from "../interface/types";
+import { useNavigate, useParams } from "react-router-dom";
+import { useStore } from "react-redux";
+import { log } from "console";
+import Section from "./languageline";
+
 import Skeleton from "@mui/material/Skeleton";
-import { useNavigate } from "react-router-dom";
 
 interface HomeProps {}
 
 const Home: React.FC<HomeProps> = () => {
   const navigation = useNavigate();
-  const [section, setSection] = React.useState<SectionsType[]>([]);
-  const [icons, setIcons] = React.useState<LanguageType[]>([]);
-  const [languageID, setLanguageID] = React.useState<number>(1);
+  const [section, setSection] = React.useState<SectionType[]>([]);
+  const [language, setLanguae] = React.useState<LanguageType[]>([]);
+  const [loading, setLoading] = React.useState<boolean>(true);
+  const [sectionLoading, setSectionLoading] = React.useState<boolean>(true);
 
+  const { languageID } = useParams<{ languageID: string }>();
+  console.log(languageID);
   //logout
   const handleLogout = () => {
-     localStorage.removeItem("user")
-     navigation("/")
-   }
-
-  // sectins
-  React.useEffect(() => {
-    http
-      .get("language/list-for-users")
-      .then((res) => setIcons(res.data.data))
-      .catch((err) => console.log(err));
-  }, []);
-
-  // enter to language selection
-  const getElementId = (id:number) => {
-    setLanguageID(id);
+    localStorage.removeItem("user");
+    navigation("/");
   };
 
- // get section id
-  const getSectionId = (id:number) => {
-    console.log(id)
-    navigation(`/${id}`)
- }
+  // get section id
+  const getSectionId = (id: number) => {
+    console.log(id);
+    navigation(`/${id}`);
+  };
+  // sectins
+
+  // enter to language
   React.useEffect(() => {
-    console.log("id", languageID);
-    http
-      .get(`section/by-language-id/${languageID}`, {
-        headers: {
-          Authorization:
-            "Bearer " +
-            "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJqYW1zaGlkYmVrZDY2NEBnbWFpbC5jb20iLCJpYXQiOjE2NjYyMzcxNjAsImV4cCI6MTY2NjMwOTE2MH0.OIOgbt3a5giTpvk_KUjnMWPDy9_MJI6mQoXj-KPFwGp_1JZ4WyJnHIujFqG7urFV-ZflePD0-lBFMvQis0ruHw",
-        },
-      })
-      .then((res) => {
-        setSection(res.data.data);
-      })
-      .catch((err) => console.log(err));
+    http.get("/language/list-for-users").then(({ data }) => {
+      console.log("data", data);
+      setLanguae(data.data);
+      setLoading(false);
+      console.log("test", data.data[0].id);
+      if (!languageID) navigation(`/${data.data[0].id}`);
+    });
+  }, []);
+  // get section data
+  React.useEffect(() => {
+    console.log(languageID);
+    http.get(`/section/by-language-id/${languageID}`).then(({ data }) => {
+      console.log("section", data.data);
+      setSection(data.data);
+      setSectionLoading(false);
+    });
   }, [languageID]);
+
   return (
     <div className={classes.wrapper}>
       <nav className="navbar navbar-expand-lg navbar-light">
@@ -101,41 +103,93 @@ const Home: React.FC<HomeProps> = () => {
           </div>
         </div>
       </nav>
+      {/* Language line */}
       <div className={classes.line}>
         <div className={classes.language}>
-          {icons &&
-            icons.map((value, index) => {
+          {loading ? (
+            <div className={classes.loading}>
+              <Skeleton variant="circular" width={40} height={40} />
+              <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+              <Skeleton variant="circular" width={40} height={40} />
+              <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+              <Skeleton variant="circular" width={40} height={40} />
+              <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+              <Skeleton variant="circular" width={40} height={40} />
+              <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+              <Skeleton variant="circular" width={40} height={40} />
+              <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+              <Skeleton variant="circular" width={40} height={40} />
+              <Skeleton variant="text" sx={{ fontSize: "1rem" }} />
+              <Skeleton variant="circular" width={40} height={40} />
+            </div>
+          ) : (
+            language.map((value) => {
               return (
-                <LanguageLine
-                  key={index}
-                  url={value.url}
-                  id={value.id}
-                  getElementId={getElementId}
-                />
+                <div
+                  key={value.id}
+                  style={
+                    value.id.toString() === languageID
+                      ? { borderBottom: "solid 2px #2DB97C" }
+                      : {}
+                  }
+                  onClick={() => navigation(`/${value.id}`)}
+                >
+                  <img
+                    src={`https://img.icons8.com/color/344/${value.title}--v1.png`}
+                    alt="404"
+                  />
+                  <span className={classes.text}>{value.title}</span>
+                </div>
               );
-            })}
+            })
+          )}
         </div>
       </div>
-
+      {/* Sections */}
       <div className={classes.cards}>
-        {section ? (
-          section.map((value, key) => {
+        {sectionLoading ? (
+          <div className={classes.loading_list}>
+            <Skeleton variant="rectangular" width={250} height={150} />
+            <Skeleton variant="rounded" width={250} height={150} />
+            <Skeleton variant="rounded" width={250} height={150} />
+            <Skeleton variant="rounded" width={250} height={150} />
+            <Skeleton variant="rectangular" width={250} height={150} />
+            <Skeleton variant="rounded" width={250} height={150} />
+            <Skeleton variant="rounded" width={250} height={150} />
+            <Skeleton variant="rounded" width={250} height={150} />
+            <Skeleton variant="rectangular" width={250} height={150} />
+          </div>
+        ) : (
+          section.map((item) => {
             return (
-              <Sections
-                key={key}
-                title={value.title}
-                description={value.description}
-                maxRate={value.maxRate}
-                id={value.id}
-                getSectionId={getSectionId}
-              />
+              <div
+                key={item.id}
+                className={classes.card}
+                onClick={() => navigation(`/section/${item.id}`)}
+              >
+                <h1 className={classes.text}>{item.title}</h1>
+                <div className={classes.star}>
+                  {[...Array(item.methodSignature)].map((x) => (
+                    <span>
+                      <img src={stars} alt="" />
+                    </span>
+                  ))}
+
+                  <span>
+                    <img src={star} alt="" />
+                  </span>
+                </div>
+                <div className={classes.title}>{item.description}</div>
+
+                <h3 className={classes.result}>
+                  <span>
+                    <img src="" alt="" />
+                  </span>{" "}
+                  Task
+                </h3>
+              </div>
             );
           })
-        ) : (
-          <div className={classes.emty}>
-            <Skeleton variant="circular" width={40} height={40} />
-            <Skeleton variant="rectangular" width={210} height={60} />
-          </div>
         )}
       </div>
 
@@ -144,7 +198,6 @@ const Home: React.FC<HomeProps> = () => {
         variant="outlined"
         shape="rounded"
         className={classes.pagination}
-        
       />
       <div className={classes.container_footer}>
         <div className={classes.box}>

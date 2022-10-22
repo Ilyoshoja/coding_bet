@@ -1,5 +1,5 @@
-import React, { useState , useEffect} from "react";
-import { TypePerson } from "../interface/login_register_interface";
+import React, { useState, useEffect } from "react";
+import { TypePerson } from "../interface/types";
 import { AxiosResponse } from "axios";
 import { Link } from "react-router-dom";
 import { Alert } from "@mui/material";
@@ -8,6 +8,8 @@ import classes from "./login.module.scss";
 import Vector from "./img/Vector.png";
 import passwordImg from "./img/passwod_img.png";
 import http from "../../service";
+import { useDispatch } from "react-redux";
+import { login } from "../store/slices/auth";
 interface SingInResponse {
   success: boolean;
   message: string;
@@ -16,36 +18,17 @@ interface SingInResponse {
     refreshToken: string;
     tokenType: string;
   };
-
-  
 }
 
 const Login: React.FC = () => {
   const navigation = useNavigate();
   const [isError, setIsError] = useState<boolean>(false);
+  const dispatch = useDispatch()
   const [person, setPerson] = useState<TypePerson>({
     email: "",
     password: "",
   });
-  useEffect(() => {
-
-    const value = localStorage.getItem("user");
-    if (typeof value === "string") {
-      const parse = JSON.parse(value); // ok
-      console.log(parse)
-      http.post("auth/sign-in", parse).then((res) => {
-      if (res.data.success === true) {
-        navigation("/home");
-      } else {
-        setIsError(true);
-      }}
-      );
-
-    } else {
-      console.log("error localStorage")
-    }
-    
-  },[]);
+const [token , setToken]= React.useState<string>("")
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPerson({ ...person, [event.target.name]: event.target.value });
   };
@@ -57,26 +40,28 @@ const Login: React.FC = () => {
       password: person.password,
     };
 
-     try {
-       // sing-up user
-       const { data }: AxiosResponse<SingInResponse> = await http.post(
-         "/auth/sign-in",  
-         user
-       );
+    try {
+      // sing-up user
+      const { data }: AxiosResponse<SingInResponse> = await http.post(
+        "/auth/sign-in",
+        user
+      );
 
-       console.log("success = ", data.success);
-       if (data.success === true) {
-         localStorage.setItem("user", JSON.stringify(user));
-         navigation("/home");
-       } else {
-         setIsError(true);
-       }
-     } catch (error) {
-       console.log(error);
-       error && setIsError(true);
+      console.log("success = ", data.success);
+      setToken(data.data.accessToken)
+      localStorage.setItem("token",(data.data.accessToken));
+    dispatch(login({ email: person.email, token:data.data.accessToken }));
+      navigation("/");
+      if (data.success === true) {
+        console.log(data.data);
+
+      } else {
+        setIsError(true);
+      }
+    } catch (error) {
+      console.log(error);
+      error && setIsError(true);
     }
-
-
   };
   return (
     <div className={classes.container}>
@@ -84,7 +69,7 @@ const Login: React.FC = () => {
       <form onSubmit={handleSubmit}>
         <h3>Email</h3>
 
-        <label htmlFor="">
+        <label>
           <span>
             <img src={Vector} alt="404" />
           </span>
@@ -98,7 +83,7 @@ const Login: React.FC = () => {
         </label>
         <br />
         <h3>Password</h3>
-        <label htmlFor="">
+        <label>
           <span>
             <img src={passwordImg} alt="" />
           </span>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { TypePerson } from "../interface/login_register_interface";
+import { TypePerson } from "../interface/types";
 import Vector from "./img/Vector.png";
 import passwordImg from "./img/passwod_img.png";
 import classes from "./login.module.scss";
@@ -58,7 +58,7 @@ const Register: React.FC = () => {
         setIsError(true)
       }
 
-    } catch (error) { console.log(error);}
+    } catch (error) { console.log(error)}
   };
   return (
     <div className={classes.container}>
